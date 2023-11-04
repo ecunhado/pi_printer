@@ -1,0 +1,14 @@
+[Unit]
+Description=Startup script for Pi Printer
+PartOf=Tmux.service
+After=Tmux.service
+
+[Service]
+User=pi
+Restart=always
+RestartSec=3
+RemainAfterExit=yes
+ExecStart=/usr/bin/tmux new-session -d -s pi_printer python3 /home/pi/pi_printer/main.py --mode 0 --time 10:00
+
+[Install]
+WantedBy=multi-user.target
