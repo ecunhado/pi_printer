@@ -60,7 +60,10 @@ def create_file(template, current_day):
 def print_file(path):
   subprocess.run(["lpr", "temp/out.pdf"])
 
-def send_new_exercise(current_day = get_current_day()):
+def send_new_exercise(current_day = "no_day"):
+  if current_day == "no_day":
+    current_day = get_current_day()
+
   # create PDF file
   file = create_file("template.html", current_day)
 
@@ -77,7 +80,7 @@ def main():
   parser.add_argument('--time', type = str, nargs = '+',
                       help = 'time (--:--) at which a new sheet will be printed on schedule (mode 0 required)')
   parser.add_argument('--day', type = str, nargs = '+',
-                      help = 'day to be displayed on sheetto be immediately printed (mode 1 required)')
+                      help = 'day to be displayed on sheet to be immediately printed (mode 1 required)')
   args = parser.parse_args()
 
   if (args.mode[0] == '0'): # print on schedule
@@ -98,6 +101,13 @@ def main():
       send_new_exercise()
     else:
       send_new_exercise(args.day[0])
+  # elif (args.mode[0] == '2'): # debug mode
+  #   print("Setting Schedule: Every minute")
+  #   schedule.every(1).minutes.do(send_new_exercise)
+
+  #   while 1:
+  #     schedule.run_pending()
+  #     time.sleep(1)
   else:
     print("Incorrect mode.")
 
